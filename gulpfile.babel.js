@@ -1,27 +1,55 @@
+require('babel/polyfill');
 import gulp from 'gulp';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import nodemon from 'nodemon';
 import path from 'path';
+import { Schema } from './src/server/data/schema';
+import { introspectionQuery } from 'graphql/utilities';
+import { graphql } from 'graphql';
+import fs from 'fs';
 
 import configs from './webpack.config';
 const [ frontendConfig, backendConfig ] = configs;
 
-gulp.task('dev', () => {
-  new WebpackDevServer(webpack(frontendConfig), {
+let compiler;
+
+// trigger a manual recompilation of webpack(frontendConfig);
+function recompile() {
+  if (!compiler)
+    return null;
+  return new Promise((resolve, reject) => {
+    compiler.run((err, stats) => {
+      if (err)
+        reject(err);
+      console.log('[webpackDevServer]: recompiled');
+      resolve();
+    });
+  });
+}
+
+// run the webpack dev server
+//  must generate the schema.json first as compiler relies on it for babel-relay-plugin
+gulp.task('webpack', ['generate-schema'], () => {
+  compiler = webpack(frontendConfig);
+  let server = new WebpackDevServer(compiler, {
     contentBase: path.join(__dirname, 'build', 'public'),
     hot: true,
+    noInfo: true,
+    stats: { colors: true },
     historyApiFallback: true,
     proxy: {
-      '*': 'http://localhost:8080'
+      '/graphql': 'http://localhost:8080'
     }
-  }).listen(3000, 'localhost', (err, result) => {
+  });
+  server.listen(3000, 'localhost', (err, result) => {
     if (err)
-      return console.log(err);
-    console.log('webpack-dev-server listening on localhost:3000');
+      return console.error(err);
+    console.log('[webpackDevServer]: listening on localhost:3000');
   });
 });
 
+// restart the backend server whenever a required file from backend is updated
 gulp.task('backend-watch', () => {
   webpack(backendConfig).watch(100, (err, stats) => {
     if (err)
@@ -30,7 +58,26 @@ gulp.task('backend-watch', () => {
   });
 });
 
-gulp.task('server', ['backend-watch'], () => {
+// Regenerate the graphql schema and recompile the frontend code that relies on schema.json
+gulp.task('generate-schema', () => {
+  return graphql(Schema, introspectionQuery)
+    .then(result => {
+      if (result.errors)
+        return console.error('[schema]: ERROR --', JSON.stringify(result.errors, null, 2));
+      fs.writeFileSync(
+        path.join(__dirname, './src/server/data/schema.json'),
+        JSON.stringify(result, null, 2)
+      );
+      return compiler ? recompile() : null;
+    });
+});
+
+// recompile the schema whenever .js files in data are updated
+gulp.task('watch-schema', () => {
+  gulp.watch(path.join(__dirname, './src/server/data', '**/*.js'), ['generate-schema']);
+});
+
+gulp.task('server', ['backend-watch', 'watch-schema'], () => {
   nodemon({
     execMap: {
       js: 'node'
@@ -42,8 +89,8 @@ gulp.task('server', ['backend-watch'], () => {
     ext: 'noop',
     ignore: ['*']
   }).on('restart', () => {
-    console.log('nodemon: restart');
+    console.log('[nodemon]: restart');
   });
 });
 
-gulp.task('default', ['dev', 'server']);
+gulp.task('default', ['webpack', 'server']);

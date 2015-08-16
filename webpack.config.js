@@ -40,7 +40,7 @@ var frontendConfig = assign({}, defaultConfig, {
       {
         test: /\.js$/,
         include: path.join(__dirname, 'src', 'frontend'),
-        loaders: ['react-hot', 'babel?stage=0']
+        loaders: ['react-hot', 'babel?stage=0&plugins[]=' + path.join(__dirname, 'relayPlugin')]
       },
       {
         test: /\.scss$/,
