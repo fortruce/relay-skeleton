@@ -1,4 +1,3 @@
-require('babel/polyfill');
 import gulp from 'gulp';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
