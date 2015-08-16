@@ -1,20 +1,11 @@
 import express from 'express';
+import { Schema } from './data/schema';
+import graphQLHTTP from 'express-graphql';
 
 const app = express();
-
-app.get('/api', (req, res) => {
-  res.json({
-    shouts: [
-      'Hello World!',
-      'This is React and Webpack...',
-      'They make development fun',
-      'Another shout'
-    ]
-  });
-});
-
-app.listen(8080, function(err) {
+app.use('/', graphQLHTTP({ schema: Schema, pretty: true }));
+app.listen(8080, (err) => {
   if (err)
-    return console.log(err);
-  console.log('running on localhost:8080');
+    return console.error(err);
+  console.log('GraphQL Server is now running on localhost:8080');
 });
