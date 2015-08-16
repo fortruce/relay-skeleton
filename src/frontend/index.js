@@ -1,8 +1,21 @@
 import React from 'react';
-import Root from './Root';
-import HashHistory from 'react-router/lib/HashHistory';
+import ReactDOM from 'react-dom';
+import Relay from 'react-relay';
+import AppHomeRoute from './routes/AppHomeRoute';
+import Application from './components/Application';
 
-React.render(
-  <Root history={ new HashHistory() } />,
+class Root extends React.Component {
+  render() {
+    return (
+      <Relay.RootContainer 
+        Component={ Application }
+        route={ new AppHomeRoute() }
+      />
+    );
+  }
+}
+
+ReactDOM.render(
+  <Root />,
   document.getElementById('container')
 );
