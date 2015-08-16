@@ -1,18 +1,16 @@
 {
-  "name": "react-fullstack-skeleton",
+  "name": "relay-skeleton",
   "version": "0.0.1",
-  "description": "A minimal React fullstack skeleton featuring hot reloading and a backend api server.",
+  "description": "A minimal React, Relay, GraphQL skeleton.",
   "main": "gulpfile.babel.js",
   "dependencies": {
-    "body-parser": "^1.13.3",
     "express-graphql": "^0.3.0",
     "graphql": "^0.4.2",
     "graphql-relay": "^0.3.0",
     "react": "^0.14.0-beta3",
     "react-dom": "^0.14.0-beta3",
     "react-relay": "^0.1.1",
-    "react-router": "^1.0.0-beta3",
-    "whatwg-fetch": "^0.9.0"
+    "react-router": "^1.0.0-beta3"
   },
   "devDependencies": {
     "babel": "^5.8.21",
@@ -34,20 +32,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fortruce/react-fullstack-skeleton.git"
+    "url": "https://github.com/fortruce/relay-skeleton.git"
   },
   "keywords": [
     "react",
-    "fullstack",
+    "relay",
     "skeleton",
-    "hot",
-    "reload",
     "webpack"
   ],
   "author": "fortruce",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fortruce/react-fullstack-skeleton/issues"
+    "url": "https://github.com/fortruce/relay-skeleton/issues"
   },
-  "homepage": "https://github.com/fortruce/react-fullstack-skeleton"
+  "homepage": "https://github.com/fortruce/relay-skeleton"
 }
