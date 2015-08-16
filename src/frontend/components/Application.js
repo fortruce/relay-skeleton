@@ -1,27 +1,24 @@
 import React from 'react';
-import 'whatwg-fetch'; //polyfill
+import Relay from 'react-relay';
 
-export default class Application extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      shouts: []
-    };
-
-    fetch('/api')
-      .then(resp => resp.json())
-      .then(json => this.setState(json));
-  }
-
+class Application extends React.Component {
   render() {
     return (
       <div>
-        <h1>Shouts</h1>
-        <ul>
-          { this.state.shouts.map(s => <li>{s}</li>) }
-        </ul>
+        { this.props.example.text }
+        { this.props.example.id }
       </div>
     );
   }
 }
+
+export default Relay.createContainer(Application, {
+  fragments: {
+    example: () => Relay.QL`
+      fragment on Example {
+        text,
+        id
+      }
+    `
+  }
+});
