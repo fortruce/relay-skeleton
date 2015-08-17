@@ -50,10 +50,19 @@ gulp.task('webpack', ['generate-schema'], () => {
 
 // restart the backend server whenever a required file from backend is updated
 gulp.task('backend-watch', () => {
-  webpack(backendConfig).watch(100, (err, stats) => {
-    if (err)
-      return console.log(err);
-    nodemon.restart();
+  return new Promise((resolve, reject) => {
+    let compiled = false;
+    webpack(backendConfig).watch(100, (err, stats) => {
+      if (err)
+        return reject(err);
+      // trigger task completion after first compile
+      if (!compiled) {
+        compiled = true;
+        resolve();
+      } else {
+        nodemon.restart();
+      }
+    });
   });
 });
 
