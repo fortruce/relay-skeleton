@@ -1,7 +1,6 @@
 import React from 'react';
-import Relay from 'react-relay';
 
-class Application extends React.Component {
+export default class Application extends React.Component {
   render() {
     return (
       <div>
@@ -11,14 +10,3 @@ class Application extends React.Component {
     );
   }
 }
-
-export default Relay.createContainer(Application, {
-  fragments: {
-    example: () => Relay.QL`
-      fragment on Example {
-        text,
-        id
-      }
-    `
-  }
-});
