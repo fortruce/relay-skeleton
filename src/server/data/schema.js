@@ -23,7 +23,6 @@ const example = {
 var { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     let { id, type } = fromGlobalId(globalId);
-    console.log(`type: ${type}, id: ${id}`);
     if (type === 'Example')
       return example;
     return null;
