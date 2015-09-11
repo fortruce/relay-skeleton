@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A minimal React, Relay, GraphQL skeleton.",
   "main": "gulpfile.babel.js",
+  "scripts": {
+    "start": "gulp"
+  },
   "dependencies": {
     "express-graphql": "^0.3.0",
     "graphql": "^0.4.2",

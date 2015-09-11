@@ -11,6 +11,13 @@ restarted upon any changes using [nodemon][2].
 Both the server and frontend code are built and transpiled using webpack, while
 gulp is used primarily to start the webpack-dev-server and nodemon.
 
+## Getting started
+
+```
+npm start  # Launch the GraphQL server and the Webpack dev server.
+open http://localhost:3000
+```
+
 ## Directory Structure
 
 ```
