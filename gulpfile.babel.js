@@ -71,9 +71,11 @@ gulp.task('generate-schema', () => {
       json: true,
       graphql: true
     }))
-    .on('error', console.log)
+    .on('error', err => {
+      console.log(err.message);
+    })
     .pipe(gulp.dest('./src/server/data'))
-    .on('data', recompile);
+    .on('end', recompile);
 });
 
 // recompile the schema whenever .js files in data are updated
