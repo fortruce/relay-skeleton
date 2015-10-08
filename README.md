@@ -30,7 +30,7 @@ src/
   frontend/
     components/         // React components
     containers/         // Relay Containers
-    roots/              // Relay Routes (purposefully renamed `roots`)
+    routes/             // Relay Routes
     index.js            // React.render Root component
     index.template.html // Template html file that includes React bundle
   server/
