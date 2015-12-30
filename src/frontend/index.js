@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 
-// purposefully calling Relay 'routes' roots (as in Query Root)
-import ExampleRoot from './roots/ExampleRoot';
+import ExampleRoute from './routes/ExampleRoute';
 import Application from './containers/Application';
 
 class Root extends React.Component {
@@ -11,7 +10,7 @@ class Root extends React.Component {
     return (
       <Relay.RootContainer
         Component={ Application }
-        route={ new ExampleRoot() } />
+        route={ new ExampleRoute() } />
     );
   }
 }
