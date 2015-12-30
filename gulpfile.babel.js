@@ -3,9 +3,7 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import nodemon from 'nodemon';
 import path from 'path';
-import { Schema } from './src/server/data/schema';
-import { introspectionQuery } from 'graphql/utilities';
-import { graphql } from 'graphql';
+import schema from 'gulp-graphql';
 import fs from 'fs';
 
 import configs from './webpack.config';
@@ -68,16 +66,16 @@ gulp.task('backend-watch', () => {
 
 // Regenerate the graphql schema and recompile the frontend code that relies on schema.json
 gulp.task('generate-schema', () => {
-  return graphql(Schema, introspectionQuery)
-    .then(result => {
-      if (result.errors)
-        return console.error('[schema]: ERROR --', JSON.stringify(result.errors, null, 2));
-      fs.writeFileSync(
-        path.join(__dirname, './src/server/data/schema.json'),
-        JSON.stringify(result, null, 2)
-      );
-      return compiler ? recompile() : null;
-    });
+  return gulp.src('./src/server/data/schema.js')
+    .pipe(schema({
+      json: true,
+      graphql: true
+    }))
+    .on('error', err => {
+      console.log(err.message);
+    })
+    .pipe(gulp.dest('./src/server/data'))
+    .on('end', recompile);
 });
 
 // recompile the schema whenever .js files in data are updated
