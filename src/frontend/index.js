@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
+require('./scss/style.scss');
 
 import ExampleRoute from './routes/ExampleRoute';
 import Application from './containers/Application';
